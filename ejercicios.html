@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicios Unidad 2</title>
+  <script>
+    function ejercicio1() {
+      // Pedir frase válida (al menos 5 palabras)
+      let frase;
+      do {
+        frase = prompt("Introduce una frase de al menos cinco palabras:");
+        if (!frase || frase.split(' ').length < 5) {
+          console.log("%cLa frase debe contener al menos cinco palabras.", "color: red; font-weight: bold;");
+        }
+      } while (!frase || frase.split(' ').length < 5);
+
+      // Contar caracteres sin espacios
+      const caracteresSinEspacios = frase.replace(/\s/g, '').length;
+      console.log(`%cNúmero de caracteres (sin espacios): ${caracteresSinEspacios}`, "color: blue; font-weight: bold;");
+
+      // Reemplazar vocales por asteriscos
+      const fraseSinVocales = frase.replace(/[aeiouáéíóúü]/gi, '*');
+      console.log(`%cFrase con vocales reemplazadas: ${fraseSinVocales}`, "color: green; font-weight: bold;");
+
+      // Reemplazar caracteres pares por guiones bajos
+      let fraseConGuiones = Array.from(frase).map((char, index) => {
+        return (char !== ' ' && index % 2 === 1) ? '_' : char;
+      }).join('');
+      console.log(`%cFrase con elementos pares reemplazados: ${fraseConGuiones}`, "color: purple; font-weight: bold;");
+    }
+  </script>
+
+  <script>
+    function ejercicio2() {
+      // Pedimos al usuario que ingrese 7 palabras
+      let palabras = [];
+      for (let i = 0; i < 7; i++) {
+        let palabra = prompt(`Introduce la palabra ${i + 1} (debe ser variada en mayúsculas y minúsculas):`);
+        palabras.push(palabra);
+      }
+
+      // Filtrar palabras de más de 4 caracteres y hacer caso omiso de mayúsculas y minúsculas
+      let palabrasFiltradas = palabras.filter(palabra => palabra.length > 4);
+
+      // Ordenar alfabéticamente sin distinguir mayúsculas y minúsculas
+      palabrasFiltradas.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+      // Mostrar el listado de palabras ordenadas
+      alert(`Palabras ordenadas alfabéticamente: ${palabrasFiltradas.join(', ')}`);
+
+      // Pedir al usuario una palabra para verificar si está en el listado
+      let palabraUsuario = prompt("Introduce una palabra para comprobar si está en el listado:");
+
+      // Buscar la palabra en el listado ignorando mayúsculas y minúsculas
+      let palabraEncontrada = palabrasFiltradas.some(palabra => palabra.toLowerCase() === palabraUsuario.toLowerCase());
+
+      if (palabraEncontrada) {
+        // Si la palabra está, mostrar un mensaje en la consola
+        console.log(`La palabra "${palabraUsuario}" está en el listado.`);
+      } else {
+        // Si no está, añadir la palabra al listado, reordenar y mostrarlo de nuevo
+        palabrasFiltradas.push(palabraUsuario);
+        palabrasFiltradas.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+        alert(`La palabra no estaba en el listado. Se ha añadido. Nuevo listado: ${palabrasFiltradas.join(', ')}`);
+      }
+    }
+  </script>
+
+  <script>
+    function ejercicio3() {
+      // Datos iniciales de los alumnos
+      let alumnos = {
+        "Ana": 8.5,
+        "Juan": 7.2,
+        "Carlos": 6.9,
+        "Eduardo": 9.1
+      };
+
+      // Mostrar los alumnos y sus notas
+      let listaAlumnos = "Alumnos registrados:\n";
+      for (let alumno in alumnos) {
+        listaAlumnos += `${alumno}: ${alumnos[alumno]}\n`;
+      }
+      alert(listaAlumnos);
+
+      // Pedir el nombre del alumno
+      let nombreAlumno = prompt("Introduce el nombre del alumno:");
+
+      // Verificar si el alumno ya está registrado
+      if (nombreAlumno in alumnos) {
+        // Si el alumno está registrado, mostrar su nota
+        alert(`La nota de ${nombreAlumno} es: ${alumnos[nombreAlumno]}`);
+      } else {
+        // Si no está registrado, pedir su nota y registrarlo
+        let nuevaNota;
+        do {
+          nuevaNota = parseFloat(prompt(`El alumno ${nombreAlumno} no está registrado. Introduce su nota (entre 0 y 10):`));
+        } while (isNaN(nuevaNota) || nuevaNota < 0 || nuevaNota > 10);
+
+        alumnos[nombreAlumno] = nuevaNota;  // Añadir el nuevo alumno
+        alert(`${nombreAlumno} ha sido añadido con la nota: ${nuevaNota}`);
+      }
+
+
+      // Calcular la nota media de la clase
+      let totalNotas = 0;
+      let numeroAlumnos = 0;
+      for (let nota in alumnos) {
+        totalNotas += alumnos[nota];
+        numeroAlumnos++;
+      }
+      let mediaClase = (totalNotas / numeroAlumnos).toFixed(2);  // Media con 2 decimales
+
+      // Mostrar la nota media en la consola
+      console.log(`%cLa nota media de la clase es: ${mediaClase}`, "color: blue; font-weight: bold;");
+
+      // Mostrar la lista de alumnos ordenada alfabéticamente
+      let alumnosOrdenados = Object.keys(alumnos).sort();
+      alert(`Alumnos en la clase (ordenados alfabéticamente): ${alumnosOrdenados.join(', ')}`);
+    }
+  </script>
+
+  <script>
+    function ejercicio4() {
+      // Crear conjuntos de múltiplos de 2 y 3 del 0 al 30
+      let multiplosDe2 = new Set();
+      let multiplosDe3 = new Set();
+
+      for (let i = 0; i <= 30; i++) {
+        if (i % 2 === 0) {
+          multiplosDe2.add(i);
+        }
+        if (i % 3 === 0) {
+          multiplosDe3.add(i);
+        }
+      }
+
+      // Mensaje inicial
+      alert("Mira el log para ver el resultado");
+
+      // 1) Unión de ambos conjuntos
+      let union = new Set([...multiplosDe2, ...multiplosDe3]);
+      console.log("%cResultado de la unión:", "color: blue; font-weight: bold;");
+      console.log(union);
+
+      // 2) Intersección de ambos conjuntos
+      let interseccion = new Set([...multiplosDe2].filter(num => multiplosDe3.has(num)));
+      console.log("%cResultado de la intersección:", "color: green; font-weight: bold;");
+      console.log(interseccion);
+
+      // 3) Diferencia del primero menos el segundo
+      let diferencia1 = new Set([...multiplosDe2].filter(num => !multiplosDe3.has(num)));
+      console.log("%cResultado de la diferencia (múltiplos de 2 menos múltiplos de 3):", "color: orange; font-weight: bold;");
+      console.log(diferencia1);
+
+      // 4) Diferencia del segundo menos el primero
+      let diferencia2 = new Set([...multiplosDe3].filter(num => !multiplosDe2.has(num)));
+      console.log("%cResultado de la diferencia (múltiplos de 3 menos múltiplos de 2):", "color: red; font-weight: bold;");
+      console.log(diferencia2);
+
+      // 5) Exclusión de los elementos que pertenecen a ambos conjuntos
+      let exclusion = new Set([...union].filter(num => !interseccion.has(num)));
+      console.log("%cResultado de la exclusión de elementos comunes:", "color: purple; font-weight: bold;");
+      console.log(exclusion);
+    }
+  </script>
+
+  <script>
+    function ejercicio5() {
+      let numeros;
+      let numerosValidos = [];
+
+      // Pedir números separados por comas hasta que sean válidos
+      do {
+        numeros = prompt("Introduce una serie de números separados por comas:");
+
+        // Convertir la cadena a un array de números
+        numerosValidos = numeros.split(',').filter(num => !isNaN(num) && num !== "");
+
+        // Validar si hay números válidos
+        if (numerosValidos.length === 0) {
+          alert("Por favor, introduce solo números válidos separados por comas.");
+        }
+      } while (numerosValidos.length === 0);
+
+      // Contar la ocurrencia de cada número
+      let conteo = {};
+      for (let num of numerosValidos) {
+        conteo[num] = (conteo[num] || 0) + 1;
+      }
+
+      // Filtrar números únicos
+      let numerosUnicos = Object.keys(conteo).filter(num => conteo[num] === 1).map(Number);
+
+      // Mostrar resultados
+      if (numerosUnicos.length > 0) {
+        let media = numerosUnicos.reduce((sum, num) => sum + num, 0) / numerosUnicos.length;
+        alert(`Números únicos: ${numerosUnicos.join(', ')}\nMedia: ${media.toFixed(2)}`);
+      } else {
+        alert("No hay números únicos en la lista.");
+      }
+    }
+  </script>
+
+  <script>
+    function ejercicio6() {
+      // Pedir al usuario que introduzca una frase y guardar la entrada en una variable
+      const frase = prompt("Introduce una frase o palabra:");
+
+      // Convertir la frase a minúsculas y quitar caracteres no alfabéticos
+      const fraseLimpia = frase
+              .toLowerCase() // Convertir a minúsculas
+              .normalize('NFD') // Normalizar caracteres acentuados
+              .replace(/[^a-zñ]/g, ''); // Quitar caracteres no alfabéticos, manteniendo la ñ
+
+      // Invertir la frase limpia
+      const fraseInvertida = fraseLimpia.split('').reverse().join('');
+      // 1. split(''): convierte la cadena en un array de caracteres.
+      // 2. reverse(): invierte el orden de los caracteres en el array.
+      // 3. join(''): une los caracteres del array de nuevo en una cadena.
+
+      // Comparar la frase limpia con la frase invertida
+      if (fraseLimpia === fraseInvertida) {
+        alert(`"${frase}" es un palíndromo.`);
+      } else {
+        alert(`"${frase}" no es un palíndromo.`);
+      }
+    }
+  </script>
+
+  <script>
+    const tareas = [];
+
+    // Agregar tarea
+    function agregarTarea() {
+      const tareaInput = document.getElementById("tareaInput");
+      const tarea = tareaInput.value.trim();
+
+      // Validar que la tarea no esté vacía y no exista ya
+      if (tarea === "") {
+        alert("La tarea no puede estar vacía.");
+        return;
+      }
+
+      if (tareas.some(t => t.nombre === tarea)) {
+        alert("La tarea ya existe.");
+        return;
+      }
+
+      // Agregar la tarea a la lista y limpiar el campo de entrada
+      tareas.push({ nombre: tarea, completada: false });
+      tareaInput.value = "";
+      mostrarTareas();
+    }
+
+    // Completar tarea
+    function completarTarea(index) {
+      if (tareas[index].completada) {
+        alert(`La tarea "${tareas[index].nombre}" ya está completada.`);
+      } else {
+        tareas[index].completada = true;
+        mostrarTareas();
+        alert(`La tarea "${tareas[index].nombre}" ha sido completada.`);
+      }
+    }
+
+    // Eliminar tarea
+    function eliminarTarea(index) {
+      const tareaEliminada = tareas.splice(index, 1);
+      mostrarTareas();
+      alert(`La tarea "${tareaEliminada[0].nombre}" ha sido eliminada.`);
+    }
+
+    // Mostrar todas las tareas
+    function mostrarTareas() {
+      const tareasList = document.getElementById("tareasList");
+      tareasList.innerHTML = ""; // Limpiar la lista antes de volver a mostrar
+
+      tareas.forEach((tarea, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${tarea.nombre} - ${tarea.completada ? "Completada" : "Pendiente"}`;
+
+        // Crear botón para marcar como completada
+        if (!tarea.completada) {
+          const completarBtn = document.createElement("button");
+          completarBtn.textContent = "Marcar como completada";
+          completarBtn.onclick = () => completarTarea(index);
+          li.appendChild(completarBtn);
+        }
+
+        // Crear botón para eliminar la tarea
+        const eliminarBtn = document.createElement("button");
+        eliminarBtn.textContent = "Eliminar tarea";
+        eliminarBtn.onclick = () => eliminarTarea(index);
+        li.appendChild(eliminarBtn);
+
+        tareasList.appendChild(li);
+      });
+    }
+
+    // Mostrar solo tareas pendientes
+    function mostrarPendientes() {
+      const tareasList = document.getElementById("tareasList");
+      tareasList.innerHTML = ""; // Limpiar la lista antes de mostrar solo pendientes
+
+      const pendientes = tareas.filter(tarea => !tarea.completada);
+      if (pendientes.length === 0) {
+        alert("No hay tareas pendientes.");
+        return;
+      }
+
+      pendientes.forEach((tarea, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${tarea.nombre} - Pendiente`;
+
+        // Crear botón para eliminar la tarea
+        const eliminarBtn = document.createElement("button");
+        eliminarBtn.textContent = "Eliminar tarea";
+        eliminarBtn.onclick = () => {
+          const tareaIndex = tareas.findIndex(t => t.nombre === tarea.nombre);
+          eliminarTarea(tareaIndex);
+        };
+        li.appendChild(eliminarBtn);
+
+        tareasList.appendChild(li);
+      });
+    }
+  </script>
+
+
+
+</head>
+<body>
+
+  <h1>Nombre: Cintia Castel González</h1>
+  <h2>Ciclo: 2º DAW</h2>
+
+<button onclick="ejercicio1()">Ejecutar Ejercicio 1</button>
+<button onclick="ejercicio2()">Ejecutar Ejercicio 2</button>
+<button onclick="ejercicio3()">Ejecutar Ejercicio 3</button>
+<button onclick="ejercicio4()">Ejecutar Ejercicio 4</button>
+<button onclick="ejercicio5()">Ejecutar Ejercicio 5</button>
+<button onclick="ejercicio6()">Ejecutar Ejercicio 6</button>
+
+  <h2>Ejercicio 7 - Gestión de Tareas</h2>
+  <input type="text" id="tareaInput" placeholder="Introduce una tarea" />
+  <button onclick="agregarTarea()">Agregar Tarea</button>
+  <button onclick="mostrarTareas()">Mostrar Todas las Tareas</button>
+  <button onclick="mostrarPendientes()">Mostrar Tareas Pendientes</button>
+  <ul id="tareasList"></ul>
+
+</body>
+</html>
